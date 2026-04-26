@@ -3,7 +3,11 @@
 // const seconds = document.getElementById("second")
 
 let timer;
+let active = true
 num = 1
+sec = 0
+min = 0
+hr = 0
 
 function verificaZero(n, tempo) {
     if (n < 10) {
@@ -14,41 +18,57 @@ function verificaZero(n, tempo) {
         
 }
 
+// it still has a bug that that cause multiple initializations in the start function
 function start() {
     const cronos = document.querySelector(".time");
-    cronos.style.color = "black"
+    cronos.style.color = "black"    
 
     const hours = document.getElementById("hour")
     const minutes = document.getElementById("minute")
     const seconds = document.getElementById("second")
-    
-    
 
     timer = setInterval(() => {
-        verificaZero(num, seconds)
-        num += 1
+        sec += 1;
+
+        if (sec > 59) {
+            sec = 0;
+            min += 1;
+        }
+
+        if (min > 59) {
+            min = 0;
+            hr += 1;
+
+            seconds.innerText = sec;
+            minutes.innerText = min;
+            hours.innerText = hr;
+        }
+        verificaZero(sec, seconds);
+        verificaZero(min, minutes);
+        verificaZero(hr, hours);
     }, 1000);
 }
+
 
 
 function pause() {
     const cronos = document.querySelector(".time");
-    clearInterval(timer);
     cronos.style.color = "red"
+    clearInterval(timer);
 }
 
-function clear() {
-    const cronos = document.querySelector(".time");
-    cronos.style.color = "black"
-    
+function clearTimer() {
     const hours = document.getElementById("hour")
     const minutes = document.getElementById("minute")
     const seconds = document.getElementById("second")
-    num = 0
-    
-
-    timer = setInterval(() => {
-        verificaZero(num, seconds)
-        num += 1
-    }, 1000);
+    clearInterval(timer);
+    sec = 0
+    min = 0
+    hr = 0
+    seconds.innerText = 0;
+    minutes.innerText = 0;
+    hours.innerText = 0;
+    verificaZero(sec, seconds);
+    verificaZero(min, minutes);
+    verificaZero(hr, hours);
 }
